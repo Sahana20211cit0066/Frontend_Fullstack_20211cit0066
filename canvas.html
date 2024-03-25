@@ -1,30 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-
-    <title>Canvas</title>
+    <title>Canvas Drawing App</title>
+    <style>
+        canvas {
+            border: 1px solid #000;
+        }
+    </style>
 </head>
-
 <body>
-    <center>
-        <header>
-            <h1>Canvas Drawer</h1>
-            <p>Draw in the canvas by clicking and dragging the mouse</p>
-        </header>
-        <article>
-            <h2>Canvas</h2>
-            <canvas id="myCanvas" onmousedown="startDrawing(event)" onmousemove="drawLine(event)"
-                onmouseup="stopDrawing(event)"></canvas>
-            <button class="btn">Reset</button>
-    </center>
-    <script src="Script.js"></script>
+    <canvas id="myCanvas" width="800" height="400"></canvas>
+    <script>
+        const canvas = document.getElementById('myCanvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
 
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (isDrawing) {
+                const x = e.offsetX;
+                const y = e.offsetY;
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                [lastX, lastY] = [x, y];
+            }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            isDrawing = false;
+        });
+    </script>
 </body>
-
-
 </html>
